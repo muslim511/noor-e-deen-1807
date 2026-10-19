@@ -21,6 +21,11 @@ jobs:
       - name: Install Android SDK components
         uses: android-actions/setup-android@v3
 
+      - name: Install required SDK packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
       - name: Prepare Android assets
         run: |
           mkdir -p app/src/main/assets
