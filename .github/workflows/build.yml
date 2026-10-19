@@ -19,12 +19,11 @@ jobs:
           java-version: '17'
 
       - name: Install Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install SDK components
         run: |
-          sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          echo "SDK root: $SDK_ROOT"
+          yes | "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses
+          "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
