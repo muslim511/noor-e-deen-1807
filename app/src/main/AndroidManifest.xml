@@ -3,8 +3,8 @@
     <application
         android:allowBackup="true"
         android:label="Noor-e-Deen"
+        android:usesCleartextTraffic="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
-        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".MainActivity"
