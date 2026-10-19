@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#064e3b"><title>Noor-e-Deen</title><style>*{box-sizing:border-box}body{margin:0;background:#f0fdf4;color:#12352b;font-family:Arial,sans-serif}header{background:#065f46;color:white;padding:25px 18px;border-radius:0 0 25px 25px}main{padding:16px;max-width:600px;margin:auto}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card,.panel{background:white;border-radius:16px;padding:16px;margin-top:12px;text-align:center}.emoji{font-size:30px}button{background:#047857;color:white;border:0;border-radius:10px;padding:10px;margin:4px}#count{font-size:36px;color:#047857}</style></head><body><header><h1>☪ Noor-e-Deen</h1><p>Namaz • Tasbeeh • Dua • Deen</p></header><main><div class="panel"><h2>🕌 Namaz aur Jamaat</h2><div id="times">Fajr 05:00 · Zuhr 13:15 · Asr 16:30 · Maghrib 18:00 · Isha 20:00</div><button onclick="editTimes()">Jamaat timing badlein</button></div><div class="grid"><div class="card"><div class="emoji">📿</div><h3>Digital Tasbeeh</h3><div id="count">0</div><button onclick="add()">+1</button><button onclick="resetCount()">Reset</button></div><div class="card"><div class="emoji">🤲</div><h3>Dua aur Azkar</h3><button onclick="showDua()">Dua dekhein</button></div><div class="card"><div class="emoji">🧭</div><h3>Qibla Direction</h3><button onclick="qibla()">Qibla kholein</button></div><div class="card"><div class="emoji">🔔</div><h3>Namaz Reminder</h3><button onclick="remind()">Reminder</button></div><div class="card"><div class="emoji">📅</div><h3>Islamic Calendar</h3><button onclick="calendar()">Aaj ki tareekh</button></div><div class="card"><div class="emoji">☪️</div><h3>Allah ke 99 naam</h3><button onclick="names()">Naam dekhein</button></div></div><div class="panel" id="result">Assalamu Alaikum! Noor-e-Deen mein aapka swagat hai.</div></main><script>let savedTimes=JSON.parse(localStorage.getItem('jamaatTimes')||'null');
+if(savedTimes && savedTimes.length===5){
+document.getElementById('times').textContent=['Fajr','Zuhr','Asr','Maghrib','Isha'].map((n,i)=>n+' '+savedTimes[i]).join(' · ');
+}
+let count=Number(localStorage.getItem('tasbeeh')||0);document.getElementById('count').textContent=count;function add(){count++;localStorage.setItem('tasbeeh',count);document.getElementById('count').textContent=count}function resetCount(){count=0;localStorage.setItem('tasbeeh',0);document.getElementById('count').textContent=0}function editTimes(){let t=prompt('Fajr, Zuhr, Asr, Maghrib, Isha ke waqt comma se likhein','05:00,13:15,16:30,18:00,20:00');if(t){let a=t.split(',');if(a.length===5){let times=a.map(x=>x.trim());localStorage.setItem('jamaatTimes',JSON.stringify(times));document.getElementById('times').textContent=['Fajr','Zuhr','Asr','Maghrib','Isha'].map((n,i)=>n+' '+times[i]).join(' · ');}else alert('Paanch waqt comma se likhein.')}}function showDua(){
+document.getElementById('result').innerHTML = `
+<div class="card">
+<h3>1. Sone se pehle ki dua</h3>
+<p dir="rtl" lang="ar">اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْيَا</p>
+<p><b>Roman:</b> Allahumma bismika amootu wa ahya</p>
+<p><b>Meaning:</b> Aye Allah, Tere naam ke saath main marta hoon aur jeeta hoon.</p>
+</div>
+<div class="card">
+<h3>2. Neend se uthne ki dua</h3>
+<p dir="rtl" lang="ar">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ</p>
+<p><b>Roman:</b> Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilaihin-nushur</p>
+<p><b>Meaning:</b> Sab tareef Allah ke liye hai, jisne humein maut jaisi neend ke baad zindagi di; aur Usi ki taraf lautna hai.</p>
+</div>
+<div class="card">
+<h3>3. Allah ka zikr</h3>
+<p dir="rtl" lang="ar">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</p>
+<p><b>Roman:</b> SubhanAllahi wa bihamdihi</p>
+<p><b>Meaning:</b> Allah paak hai aur sab tareef Usi ke liye hai.</p>
+</div>
+<div class="card">
+<h3>4. Neend se jaagne par</h3>
+<p dir="rtl" lang="ar">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ</p>
+<p><b>Roman:</b> Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilaihin-nushur</p>
+<p><b>Meaning:</b> Sab tareef Allah ke liye hai, jisne humein neend ke baad jagaya; aur Usi ki taraf lautna hai.</p>
+</div>
+<div class="card">
+<h3>5. Allah se madad ki dua</h3>
+<p dir="rtl" lang="ar">رَبِّ زِدْنِي عِلْمًا</p>
+<p><b>Roman:</b> Rabbi zidni ilma</p>
+<p><b>Meaning:</b> Aye mere Rab, mere ilm mein izafa farma.</p>
+</div>`;
+document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function qibla(){document.getElementById('result').innerHTML='Qibla ke liye <button onclick="window.open(\'https://qiblafinder.withgoogle.com/\',\'_blank\')">Qibla Finder kholein</button>'}function remind(){document.getElementById('result').innerHTML='<div class="card"><h3>Namaz Reminder</h3><p>Apne phone ke Clock app mein Fajr, Zuhr, Asr, Maghrib aur Isha ke alarms set karein. Isse namaz ka waqt yaad rahega.</p></div>';document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});}function calendar(){document.getElementById('result').textContent='Aaj: '+new Date().toLocaleDateString('en-GB')+'. Hijri tareekh phone ke Islamic calendar se check karein.'}function names(){document.getElementById('result').textContent='Ar-Rahman (Meherban), Ar-Raheem (Rahm Karne Wala), Al-Malik (Badshah), Al-Quddus (Paak), As-Salam (Salamati Dene Wala).'}</script></body></html>
