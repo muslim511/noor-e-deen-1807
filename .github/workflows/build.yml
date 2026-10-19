@@ -7,12 +7,33 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Download source
         uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Prepare Android project
         run: |
           mkdir -p app/src/main/assets
           cp noor-e-deen.html app/src/main/assets/index.html
-          echo "Source file prepared"
+
+      - name: Build APK
+        run: gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Noor-e-Deen-APK
+          path: app/build/outputs/apk/debug/*.apk
