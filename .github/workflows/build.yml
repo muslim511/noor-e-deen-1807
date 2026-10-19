@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -18,26 +18,23 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Android SDK
-        run: |
-          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
-          echo "SDK root: $SDK_ROOT"
-          yes | "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses
-          "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+      - name: Install Android SDK components
+        uses: android-actions/setup-android@v3
 
-      - name: Install Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Prepare Android project
+      - name: Prepare Android assets
         run: |
           mkdir -p app/src/main/assets
           cp noor-e-deen.html app/src/main/assets/index.html
 
-      - name: Build APK
-        run: gradle assembleDebug
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build debug APK
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Noor-e-Deen-APK
           path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
